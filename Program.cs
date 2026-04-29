@@ -54,17 +54,21 @@ builder.Services.AddHostedService<FinanceEmailWorker>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+// --- CORS POLİTİKASI (GÜNCELLENDİ) ---
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        policy =>
-        {
-            policy.AllowAnyOrigin()
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
-        });
+    options.AddPolicy("VeriFinansPolicy", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://veri-finans-frontend.vercel.app" // Vercel linkini buraya ekledik
+              )
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
 });
-
 var app = builder.Build();
 
 // --- MIDDLEWARE SIRALAMASI ---
@@ -76,11 +80,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseCors("AllowAll");
+app.UseCors("VeriFinansPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();

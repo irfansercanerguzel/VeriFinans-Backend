@@ -132,3 +132,4 @@ C:\Users\90534\source\repos\VeriFinans\VeriFinans\obj\Debug\net9.0\refint\VeriFi
 C:\Users\90534\source\repos\VeriFinans\VeriFinans\obj\Debug\net9.0\VeriFinans.pdb
 C:\Users\90534\source\repos\VeriFinans\VeriFinans\obj\Debug\net9.0\VeriFinans.genruntimeconfig.cache
 C:\Users\90534\source\repos\VeriFinans\VeriFinans\obj\Debug\net9.0\ref\VeriFinans.dll
+C:\Users\90534\source\repos\VeriFinans\VeriFinans\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
