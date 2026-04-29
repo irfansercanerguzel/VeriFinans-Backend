@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VeriFinans")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+173b17465cfbc2a184e9c1e1b269382c603fadb8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1d2e9d2f3e6f366525af4eaa300ab4abe0fd886a")]
 [assembly: System.Reflection.AssemblyProductAttribute("VeriFinans")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VeriFinans")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
