@@ -9,8 +9,6 @@ namespace VeriFinans.Data
             : base(options)
         {
         }
-
-        public DbSet<Wallet> Wallets { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Income> Incomes { get; set; }
