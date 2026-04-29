@@ -66,6 +66,7 @@ builder.Services.AddHostedService<FinanceEmailWorker>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+
 var app = builder.Build();
 
 // --- MIDDLEWARE SIRALAMASI ---
@@ -77,7 +78,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseCors("ReactPolicy");
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
