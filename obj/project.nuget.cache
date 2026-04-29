@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "jI3fTVj3q3o=",
+  "dgSpecHash": "0lLaitJTf0E=",
   "success": true,
   "projectFilePath": "C:\\Users\\90534\\source\\repos\\VeriFinans\\VeriFinans\\VeriFinans.csproj",
   "expectedPackageFiles": [
@@ -133,8 +133,8 @@
     "C:\\Users\\90534\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\90534\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\90534\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\90534\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.15\\microsoft.netcore.app.ref.9.0.15.nupkg.sha512",
     "C:\\Users\\90534\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\9.0.15\\microsoft.windowsdesktop.app.ref.9.0.15.nupkg.sha512",
+    "C:\\Users\\90534\\.nuget\\packages\\microsoft.netcore.app.ref\\9.0.15\\microsoft.netcore.app.ref.9.0.15.nupkg.sha512",
     "C:\\Users\\90534\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\9.0.15\\microsoft.aspnetcore.app.ref.9.0.15.nupkg.sha512",
     "C:\\Users\\90534\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\9.0.15\\microsoft.netcore.app.host.win-x64.9.0.15.nupkg.sha512"
   ],

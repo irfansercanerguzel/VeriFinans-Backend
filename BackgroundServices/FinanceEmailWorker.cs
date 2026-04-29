@@ -55,6 +55,24 @@
                 var today = DateTime.Now.Date;
                 var tomorrow = today.AddDays(1);
 
+                // --- 1. OTOMATİK GELİR KAYDI (MAAŞ VB.) ---
+                var wallets = await dbContext.Wallets
+                    .Include(w => w.User)
+                    .Where(w => w.AutoIncomeEnabled && w.IncomeDayOfMonth == today.Day)
+                    .ToListAsync();
+
+                foreach (var wallet in wallets)
+                {
+                    wallet.Balance += wallet.MonthlyIncomeAmount;
+
+                    string subject = "💰 Bakiye Güncellemesi: Gelir Eklendi";
+                    string body = $"<h3>Merhaba {wallet.User?.Name},</h3>" +
+                                 $"<p>Tanımladığınız <b>{wallet.MonthlyIncomeAmount} TL</b> tutarındaki aylık geliriniz cüzdan bakiyenize eklenmiştir.</p>" +
+                                 $"<p><b>Yeni Toplam Bakiyeniz:</b> {wallet.Balance} TL</p>";
+
+                    await emailService.SendEmailAsync(wallet.User!.Email, subject, body);
+                }
+
                 // --- 2. TAKSİTLİ HARCAMA YÖNETİMİ ---
                 var activeInstallments = await dbContext.Expenses
                     .Where(e => e.InstallmentCount > 1 &&
@@ -83,7 +101,21 @@
                     .Where(e => e.IsRecurring && e.RecurringDay == today.Day)
                     .ToListAsync();
 
-              
+                foreach (var expense in recurringExpenses)
+                {
+                    var userWallet = await dbContext.Wallets.FirstOrDefaultAsync(w => w.UserId == expense.UserId);
+                    if (userWallet != null)
+                    {
+                        userWallet.Balance -= expense.Amount;
+
+                        string subject = "📊 Cüzdan Bilgisi: Düzenli Gider İşlendi";
+                        string body = $"<h3>Harcama Kaydı Bilgilendirmesi</h3>" +
+                                     $"<p>Her ay otomatik olarak işlenen <b>{expense.Description}</b> tutarı (<b>{expense.Amount} TL</b>) bakiyenizden düşülmüştür.</p>" +
+                                     $"<p><b>Güncel Kalan Nakit:</b> {userWallet.Balance} TL</p>";
+
+                        await emailService.SendEmailAsync(expense.User!.Email, subject, body);
+                    }
+                }
 
                 // --- 4. DİNAMİK KREDİ KARTI HATIRLATMASI (YENİ SİSTEM) ---
                 var allCards = await dbContext.CreditCards

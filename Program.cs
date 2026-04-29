@@ -47,18 +47,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// --- CORS POLİTİKASI ---
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("ReactPolicy", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
-    });
-});
-
 // --- SERVİS KAYITLARI ---
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<AiService>();
@@ -66,6 +54,16 @@ builder.Services.AddHostedService<FinanceEmailWorker>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
 
 var app = builder.Build();
 

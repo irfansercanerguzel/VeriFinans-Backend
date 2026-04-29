@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VeriFinans")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f83a562236af7fd6d952fdde2cf4acdd269539d9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f7642fa5e94792a774f9f3e02b48ac71e106b78d")]
 [assembly: System.Reflection.AssemblyProductAttribute("VeriFinans")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VeriFinans")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
