@@ -165,7 +165,7 @@ namespace VeriFinans.Controllers
                         Amount = payAmount,
                         Description = $"{card.CardName} Kart Ödemesi",
                         Date = DateTime.UtcNow,
-                        CategoryId = 1, // Kredi kartı ödemesi kategori ID'si (Bunu veritabanındaki geçerli bir ID ile eşleştir)
+                        CategoryId = 108, 
                         CreditCardId = null, // Kesinlikle null kalmalı!
                         InstallmentCount = 1,
                         CurrentInstallment = 1,
