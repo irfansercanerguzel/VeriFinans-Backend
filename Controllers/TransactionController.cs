@@ -405,6 +405,7 @@ namespace VeriFinans.Controllers
                 startDate = new DateTime(prev.Year, prev.Month, Math.Min(card.ClosingDay, DateTime.DaysInMonth(prev.Year, prev.Month)), 0, 0, 0, DateTimeKind.Utc).AddDays(1);
             }
 
+            // TransactionController.cs içinde 10. metodu bul ve şu şekilde güncelle:
             var statementItems = await _context.Expenses
                 .AsNoTracking()
                 .Include(e => e.Category)
@@ -415,10 +416,12 @@ namespace VeriFinans.Controllers
                     id = e.Id,
                     date = e.Date.ToString("dd.MM.yyyy"),
                     description = e.Description,
+                    categoryId = e.CategoryId, 
                     categoryName = e.Category != null ? e.Category.Name : "Genel",
                     categoryColor = e.Category != null ? e.Category.Color : "#3b82f6",
                     amount = e.Amount,
-                    isPaid = e.IsPaid
+                    isPaid = e.IsPaid,
+                    rawDate = e.Date // Düzenleme için bu da lazım
                 })
                 .ToListAsync();
 
