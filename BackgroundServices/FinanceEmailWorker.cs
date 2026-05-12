@@ -27,7 +27,8 @@
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                var now = DateTime.Now;
+                // ÇÖZÜM BURADA: Render'ın saatini (UTC) alıp 3 saat ekliyoruz (Türkiye Saati)
+                var now = DateTime.UtcNow.AddHours(3);
 
                 // SAAT KONTROLÜ: Saat 14:00 veya sonrasındaysak VE bugün henüz çalışmadıysa işlemi başlat!
                 // Neden >= 14? Çünkü sunucu tam 14:00'te kapalı kalırsa, 14:15'te açıldığında bugünü ıskalamasın.
@@ -52,7 +53,8 @@
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var emailService = scope.ServiceProvider.GetRequiredService<EmailService>();
 
-                var today = DateTime.Now.Date;
+                // BURAYI DA TR SAATİNE ÇEVİRDİK Kİ GECE YARISI KARIŞIKLIK OLMASIN
+                var today = DateTime.UtcNow.AddHours(3).Date;
                 var tomorrow = today.AddDays(1);
 
                 // --- 1. OTOMATİK GELİR KAYDI (MAAŞ VB.) ---
