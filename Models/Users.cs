@@ -24,5 +24,7 @@ namespace VeriFinans.Models
         public ICollection<Expense> Expenses { get; set; }
         public ICollection<Income> Incomes { get; set; }
         public ICollection<CreditCard> CreditCards { get; set; }
+
+        public ICollection<Category> Categories { get; set; }
     }
 }

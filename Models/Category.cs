@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace VeriFinans.Models
 {
@@ -18,18 +19,21 @@ namespace VeriFinans.Models
         [Required]
         public int Type { get; set; }
 
-        // --- HİYERARŞİ İÇİN KRİTİK ALANLAR ---
+        // --- KULLANICIYA ÖZEL ALAN ---
+        // KANKA: Null ise herkes görür (Sistem Kategorisi), değer varsa sadece o User görür.
+        public int? UserId { get; set; }
 
-        // Üst kategorinin Id'si (Eğer boşsa bu bir ANA kategoridir: Örn: Araba)
+        [ForeignKey("UserId")]
+        public virtual User? User { get; set; }
+
+        // --- HİYERARŞİ İÇİN KRİTİK ALANLAR ---
         public int? ParentId { get; set; }
 
         [ForeignKey("ParentId")]
         public virtual Category? Parent { get; set; }
 
-        // Bu kategorinin altındaki evlatlar (Örn: FR 2104, KC 105)
         public virtual ICollection<Category>? SubCategories { get; set; } = new List<Category>();
 
-        // Seviye takibi (Opsiyonel ama raporlama için hayat kurtarır: 1, 2, 3)
         public int Level { get; set; } = 1;
     }
 }
