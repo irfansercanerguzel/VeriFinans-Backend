@@ -49,7 +49,14 @@ namespace VeriFinans.Services
             }
             catch (Exception ex)
             {
+                // Dış hata
                 Console.WriteLine($"--> Mail gönderme hatası: {ex.Message}");
+
+                // İŞTE BİZE LAZIM OLAN ASIL İÇ HATA (INNER EXCEPTION)
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"--> GİZLİ HATA DETAYI: {ex.InnerException.Message}");
+                }
             }
         }
     }
