@@ -1,5 +1,6 @@
-﻿using System.Net;
-using System.Net.Mail;
+﻿using System.Text;
+using System.Text.Json;
+using System.Net.Http.Headers;
 
 namespace VeriFinans.Services
 {
@@ -7,7 +8,6 @@ namespace VeriFinans.Services
     {
         private readonly IConfiguration _configuration;
 
-        // IConfiguration'ı inject ediyoruz ki ayarlara ulaşabilelim
         public EmailService(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -15,48 +15,59 @@ namespace VeriFinans.Services
 
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
-            // Ayarları Render'dan (veya appsettings'ten) çekiyoruz
+            var apiKey = _configuration["EmailSettings:MailjetApiKey"];
+            var apiSecret = _configuration["EmailSettings:MailjetApiSecret"];
             var senderEmail = _configuration["EmailSettings:Email"] ?? "medsched0@gmail.com";
-            var senderPassword = _configuration["EmailSettings:Password"];
 
-            if (string.IsNullOrEmpty(senderPassword))
+            if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(apiSecret))
             {
-                Console.WriteLine("--> Mail şifresi bulunamadı! Ayarları kontrol et.");
+                Console.WriteLine("--> Mailjet şifreleri bulunamadı! Ayarları kontrol et.");
                 return;
             }
 
-            var client = new SmtpClient("smtp.gmail.com", 587)
-            {
-                EnableSsl = true,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(senderEmail, senderPassword)
-            };
-
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(senderEmail, "VeriFinance AI"),
-                Subject = subject,
-                Body = message,
-                IsBodyHtml = true
-            };
-
-            mailMessage.To.Add(toEmail);
-
             try
             {
-                await client.SendMailAsync(mailMessage);
-                Console.WriteLine("--> Mail başarıyla gönderildi!");
+                // Mailjet'in HTTP API'sine doğrudan bağlanıyoruz (Render bu portu kapatamaz)
+                using var client = new HttpClient();
+
+                // Şifreleri Mailjet'in istediği formata (Basic Auth) çeviriyoruz
+                var authToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{apiKey}:{apiSecret}"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authToken);
+
+                // Mailjet'in istediği JSON yapısını kuruyoruz
+                var payload = new
+                {
+                    Messages = new[]
+                    {
+                        new
+                        {
+                            From = new { Email = senderEmail, Name = "VeriFinans AI" },
+                            To = new[] { new { Email = toEmail } },
+                            Subject = subject,
+                            HTMLPart = message
+                        }
+                    }
+                };
+
+                var jsonPayload = JsonSerializer.Serialize(payload);
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                // Roketi ateşliyoruz
+                var response = await client.PostAsync("https://api.mailjet.com/v3.1/send", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("--> Mailjet ile mail başarıyla Render engelini aşıp fırlatıldı! 🚀");
+                }
+                else
+                {
+                    var errorBody = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"--> Mailjet Hatası: Status {response.StatusCode}, Detay: {errorBody}");
+                }
             }
             catch (Exception ex)
             {
-                // Dış hata
-                Console.WriteLine($"--> Mail gönderme hatası: {ex.Message}");
-
-                // İŞTE BİZE LAZIM OLAN ASIL İÇ HATA (INNER EXCEPTION)
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine($"--> GİZLİ HATA DETAYI: {ex.InnerException.Message}");
-                }
+                Console.WriteLine($"--> Kodu çalıştırırken hata oluştu: {ex.Message}");
             }
         }
     }
